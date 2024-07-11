@@ -1,0 +1,9 @@
+celery==5.2.0
+fastapi==0.108.0
+redis==3.5.3
+psycopg2==2.9.9
+pydantic==1.10.7
+uvicorn==0.25.0
+SQLAlchemy==2.0.24
+argh==0.26.2
+flower==1.0.0
