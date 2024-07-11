@@ -74,3 +74,16 @@ services:
       - backend
       - redis
       - celery
+
+  frontend:
+    container_name: adverity-transformer-challenge-frontend
+    build:
+      context: ${PWD}/frontend/
+      dockerfile: Dockerfile
+    image: adverity-transformer-challenge-frontend
+    ports:
+      - "5173:80"
+    volumes:
+      - ${PWD}/backend/:/home/user/backend/:delegated
+      - ${PWD}/frontend/:/home/user/frontend/:delegated
+    restart: on-failure
