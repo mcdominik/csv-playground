@@ -21,8 +21,6 @@ export const File = () => {
           skipEmptyLines: true,
         });
 
-        console.log(parsedData);
-
         setData(parsedData);
 
         return response.data;

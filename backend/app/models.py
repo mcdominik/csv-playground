@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 
 
 class CsvFiles(Base):
-    __tablename__ = 'csvfiles'
+    __tablename__ = "csvfiles"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True, unique=True)

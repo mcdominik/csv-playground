@@ -30,7 +30,6 @@ export const AppOutlet: React.FC = () => {
 
   const fetchHistory = async (): Promise<CsvFile[]> => {
     const response = await axios.get(`csv-files`);
-    console.log(response.data);
     return response.data;
   };
 
@@ -38,7 +37,6 @@ export const AppOutlet: React.FC = () => {
     async function updateHistory() {
       const history = await fetchHistory();
       setHistory(history);
-      console.log("History updated:", history);
     }
     updateHistory();
   }, []);

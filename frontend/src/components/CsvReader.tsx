@@ -36,7 +36,6 @@ const CsvReader: React.FC<Props> = (props): JSX.Element => {
       content: JSON.stringify(data),
     };
     const response = await axios.post(`csv-files`, payload);
-    console.log(response.data);
     return response.data;
   };
 
@@ -56,8 +55,7 @@ const CsvReader: React.FC<Props> = (props): JSX.Element => {
             message.success(`${file.name} file uploaded successfully.`);
           },
           error: (error: any) => {
-            message.error(`${file.name} file upload failed.`);
-            console.error(error);
+            message.error(`${file.name} file upload failed: ${error}`);
           },
         });
       };
@@ -65,7 +63,7 @@ const CsvReader: React.FC<Props> = (props): JSX.Element => {
       return false;
     },
     onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
+      message.info(`Dropped files: ${e.dataTransfer.files}`);
     },
   };
   let newItems: any[] = [];

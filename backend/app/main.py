@@ -1,10 +1,9 @@
-from fastapi.responses import JSONResponse
 import uvicorn
 from fastapi import Body, FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Annotated, Optional
-from .celery_worker import process_some_task
+from .celery_worker import join_data
 from .database import engine, SessionLocal
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -44,12 +43,12 @@ def get_db():
 db_dependancy = Annotated[Session, Depends(get_db)]
 
 
-@app.get('/csv-files')
+@app.get("/csv-files")
 async def get_files_(db: db_dependancy, title: Optional[str] = None):
     if not title:
         result = db.query(models.CsvFiles).all()
         if not result:
-            raise HTTPException(status_code=404, detail='File not found')
+            raise HTTPException(status_code=404, detail="File not found")
         return result
 
     results = db.query(models.CsvFiles).filter(
@@ -74,25 +73,17 @@ async def create_file(csv_file: CsvBase, db: db_dependancy):
 
 
 @app.post("/csv-files/enrich-json")
-async def enrich_file_with_json(key_csv: str, key_json: str, json_string: str, title: str, db: db_dependancy):
+async def enrich_file_with_json(
+    key_csv: str, key_json: str, json_string: str, title: str, db: db_dependancy
+):
     if not title:
-        raise HTTPException(status_code=404, detail='File not found')
+        raise HTTPException(status_code=404, detail="File not found")
     result = db.query(models.CsvFiles).filter(
         models.CsvFiles.title == title).first()
 
-    print(result)
-    print(json_string)
-    print(key_csv)
-    print(key_json)
-
-    if not result:
-        return result
-
-
-@app.get("/push")
-async def push(device_token: str):
-    process_some_task.delay(device_token)
-    return {"message": "Notification sent"}
+    # TODO create join function and sent to celery worker
+    new_csv = join_data.delay()
+    # TODO save new file to db...
 
 
 if __name__ == "__main__":

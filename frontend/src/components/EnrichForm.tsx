@@ -27,6 +27,7 @@ export const EnrichForm = (props: Props) => {
   const [enrichColumns, setEnrichColumns] = useState<string[]>([]);
   const [selectedJsonKey, setSelectedJsonKey] = useState("");
   const [secondCsv, setSecondCsv] = useState<string>("");
+
   const handleLoad = async (values: any) => {
     const endpoint = values.endpoint;
 
@@ -35,9 +36,7 @@ export const EnrichForm = (props: Props) => {
       const csv = Papa.unparse(response.data);
 
       const csvJson = JSON.stringify(csv);
-      console.log("CSV Data:", csv);
       setSecondCsv(csvJson);
-      console.log("CSV JSONdata:", csvJson);
 
       const firstRow = response.data[0];
       if (firstRow) {
@@ -46,13 +45,15 @@ export const EnrichForm = (props: Props) => {
       }
     } catch (error) {
       message.error("Failed to load JSON data from the provided endpoint");
-      console.error("Error fetching JSON data:", error);
     }
   };
 
   const showModal = () => {
     setOpen(true);
   };
+
+  // TO DO FIX UPROCESSABLE ENTITY ERROR
+
   const handleOk = () => {
     setLoading(true);
     const payload: EnrichDto = {
@@ -61,10 +62,8 @@ export const EnrichForm = (props: Props) => {
       key_json: selectedJsonKey,
       json_string: secondCsv,
     };
-
     const response = axios.post("/csv-files/enrich-json", payload);
 
-    console.log(response);
     setLoading(false);
   };
 
@@ -108,10 +107,7 @@ export const EnrichForm = (props: Props) => {
               wrapperCol={{ span: 24 }}
               style={{ marginBottom: "40px" }}
             >
-              <Input
-                addonBefore="http"
-                defaultValue="https://jsonplaceholder.typicode.com/users"
-              />
+              <Input addonBefore="http" />
             </Form.Item>
             <Button type="primary" htmlType="submit">
               Load
