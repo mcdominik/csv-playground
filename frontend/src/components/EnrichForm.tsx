@@ -22,7 +22,7 @@ export const EnrichForm = (props: Props) => {
   const { Title } = Typography;
 
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [selectedCsvKey, setSelectedCsvKey] = useState(props.columns[0]);
   const [enrichColumns, setEnrichColumns] = useState<string[]>([]);
   const [selectedJsonKey, setSelectedJsonKey] = useState("");
@@ -54,7 +54,7 @@ export const EnrichForm = (props: Props) => {
 
   // TO DO FIX UPROCESSABLE ENTITY ERROR
 
-  const handleOk = () => {
+  const handleOk = async () => {
     setLoading(true);
     const payload: EnrichDto = {
       title: props.title,
@@ -62,7 +62,7 @@ export const EnrichForm = (props: Props) => {
       key_json: selectedJsonKey,
       json_string: secondCsv,
     };
-    const response = axios.post("/csv-files/enrich-json", payload);
+    await axios.post("/csv-files/enrich-json", payload);
 
     setLoading(false);
   };

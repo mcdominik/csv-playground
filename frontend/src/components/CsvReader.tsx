@@ -73,7 +73,7 @@ const CsvReader: React.FC<Props> = (props): JSX.Element => {
     key: field,
   }));
 
-  const myData = data?.data.forEach((object: any) => {
+  data?.data.forEach((object: any) => {
     let newItem: any = {};
     myColumns?.forEach((column) => {
       newItem[column.key] = object[column.key];

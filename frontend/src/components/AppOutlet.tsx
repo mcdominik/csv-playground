@@ -8,7 +8,6 @@ import { PlusOutlined } from "@ant-design/icons";
 export const AppOutlet: React.FC = () => {
   const { Sider } = Layout;
   const { Title } = Typography;
-  const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<CsvFile[]>([]);
   const navigate = useNavigate();
 
@@ -66,12 +65,14 @@ export const AppOutlet: React.FC = () => {
             items={items}
             onClick={handleMenuClick}
           />
-          <Flex onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
-            <Title style={{ color: "white", fontSize: "small" }} level={5}>
-              Upload more
-            </Title>
-            <PlusOutlined style={{ color: "white" }} />
-          </Flex>
+          {history.length > 0 && (
+            <Flex onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
+              <Title style={{ color: "white", fontSize: "small" }} level={5}>
+                Upload morexd
+              </Title>
+              <PlusOutlined style={{ color: "white" }} />
+            </Flex>
+          )}
         </Sider>
         <Layout
           style={{
